@@ -10,25 +10,25 @@ def printQ(qList):
       
     # set style and size of font  
     # that you want in the pdf 
-    pdf.set_font("Arial", size = 15) 
+    pdf.set_font("Arial", size = 11) 
     
-    # create a cell 
-    pdf.cell(200, 10, txt = "GeeksforGeeks",  
-             ln = 2, align = 'C') 
-             
-    lnValue = 1;
-      
+    lnValue = 1
+    index = 0
+
     for q in qList:
         # Control whether to start from a new line
         lnValue = 1 - lnValue
         
         # add quesiton cell 
-        pdf.cell(100, 10, q, 
+        pdf.cell(100, 8, q, 
                  ln = lnValue, align = 'L') 
+				 
+        index = index + 1
+		
+        if index % 10 == 0:
+            pdf.cell(100, 4, ' ', 
+                 ln = 1, align = 'L') 
+			
       
     # save the pdf with name .pdf 
-    pdf.output("GFG.pdf")
-
-list = ['1 + 1 = ', '2 + 2 = ', '3 + 3 = ', '4 + 4 = ']
-
-printQ(list)    
+    pdf.output("math-001.pdf")

@@ -23,7 +23,7 @@ def generateQuestions(num):
         num1 = random.randint(1, 99)
         num2 = random.randint(1, 99)
         operNum = random.randint(0, 1)
-        operType = 'ADD' if operNum == 0 else 'SUBTRACT'
+        operType = 'ADD' if operNum == 1 else 'SUBTRACT'
         
         while not validate(operType, num1, num2):
             num1 = random.randint(1, 99)
@@ -42,7 +42,13 @@ def generateQuestions(num):
 def validate(operType, num1, num2):
     if operType == 'SUBTRACT' and num1 <= num2:
         return False
+    elif num1 > 20 or num2 > 20:
+        return False
+    elif num1 < 10 and num2 < 10:
+        return False
+    elif num1 < 6 or num2 < 6:
+        return False
         
     return True
     
-generateQuestions(120)
+generateQuestions(240)
