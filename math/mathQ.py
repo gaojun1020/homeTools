@@ -15,7 +15,7 @@ class Question:
     
         return str(self.num1) + ' ' + oper + ' ' + str(self.num2) + ' = '
 
-def generateQuestions(num):
+def generateQuestions(num, mode:int):
     qList = []
     qStrList = []
     
@@ -37,7 +37,7 @@ def generateQuestions(num):
     for q in qList:
         qStrList.append(q.getString())
     
-    printQ(qStrList)
+    printQ(qStrList, mode)
     
 def validate(operType, num1, num2):
     if operType == 'SUBTRACT' and num1 <= num2:
@@ -51,4 +51,4 @@ def validate(operType, num1, num2):
         
     return True
     
-generateQuestions(240)
+generateQuestions(240, 4)
