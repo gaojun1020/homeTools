@@ -1,5 +1,7 @@
 from mathGen import printQ
+
 import random
+import sys
 
 class Question:
     def __init__(self, num1, num2, operType):
@@ -23,7 +25,7 @@ def generateQuestions(num, mode:int):
     for i in range(num):
         num1 = random.randint(1, 99)
         num2 = random.randint(1, 99)
-        operNum = random.randint(0, 1)
+        operNum = random.randint(0, 2)
         operType = 'ADD' if operNum == 1 else 'SUBTRACT'
         
         while not validate(operType, num1, num2):
@@ -55,5 +57,15 @@ def validate(operType, num1, num2):
         return False
         
     return True
+
+if len(sys.argv) != 3:
+    numOfQ = 240
+    numOfCol = 2
+else:
+    numOfQ = int(sys.argv[1])
+    numOfCol = int(sys.argv[2])
+
+
+print("Generating a paper with [%s] questions in [%s] columns..."%(numOfQ, numOfCol))
     
-generateQuestions(240, 2)
+generateQuestions(numOfQ, numOfCol)
