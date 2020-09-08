@@ -59,8 +59,8 @@ def validate(operType, num1, num2):
     return True
 
 if len(sys.argv) != 3:
-    numOfQ = 240
-    numOfCol = 2
+    numOfQ = int(input("Number of questions:"))
+    numOfCol = int(input("Number of columns:"))
 else:
     numOfQ = int(sys.argv[1])
     numOfCol = int(sys.argv[2])
