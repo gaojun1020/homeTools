@@ -1,0 +1,1 @@
+python mathQ.py %1 %2
