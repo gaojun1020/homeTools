@@ -9,15 +9,28 @@ class Question:
         self.num2 = num2
         self.operType = operType
         
-    def getString(self):
+        if self.operType == 'ADD':
+            self.answer = num1 + num2
+        else:
+            self.answer = num1 - num2
+        
+    def getString(self, mode):
         if self.operType == 'ADD':
             oper = '+'
         else:
             oper = '-'
+            
+        if mode == 'normal':
+            qStr = str(self.num1) + ' ' + oper + ' ' + str(self.num2) + ' = '
+        elif mode == 'fillBlank':
+            if random.randint(0, 1) == 0:
+                qStr = '(   ) ' + oper + ' ' + str(self.num2) + ' = ' + str(self.answer)
+            else:
+                qStr = str(self.num1) + ' ' + oper + ' (   )' + ' = ' + str(self.answer)
     
-        return str(self.num1) + ' ' + oper + ' ' + str(self.num2) + ' = '
+        return qStr
 
-def generateQuestions(num, mode:int):
+def generateQuestions(num, numCol:int, mode):
     qList = []
     qStrList = []
     additionCnt = 0
@@ -40,9 +53,9 @@ def generateQuestions(num, mode:int):
     print('Additon: ' + str(additionCnt))
     
     for q in qList:
-        qStrList.append(q.getString())
+        qStrList.append(q.getString(mode))
     
-    printQ(qStrList, mode)
+    printQ(qStrList, numCol)
     
 def validate(operType, num1, num2):
     if operType == 'SUBTRACT' and num1 <= num2:
@@ -58,14 +71,21 @@ def validate(operType, num1, num2):
         
     return True
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     numOfQ = int(input("Number of questions:"))
     numOfCol = int(input("Number of columns:"))
+    mode = input("Question Mode (1:normal/2:fillBlank):")
 else:
     numOfQ = int(sys.argv[1])
     numOfCol = int(sys.argv[2])
+    mode = sys.argv[3]
+
+if mode == '1':
+    mode = 'normal'
+else:
+    mode = 'fillBlank'
 
 
-print("Generating a paper with [%s] questions in [%s] columns..."%(numOfQ, numOfCol))
+print("Generating a paper with [%s] questions in [%s] columns with mode:[%s]..."%(numOfQ, numOfCol, mode))
     
-generateQuestions(numOfQ, numOfCol)
+generateQuestions(numOfQ, numOfCol, mode)

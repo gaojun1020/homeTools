@@ -1,1 +1,1 @@
-python mathQ.py %1 %2
+python mathQ.py %1 %2 %3
