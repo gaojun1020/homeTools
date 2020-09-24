@@ -2,6 +2,7 @@ from mathGen import printQ
 
 import random
 import sys
+import time
 
 class Question:
     def __init__(self, num1, num2, operType):
@@ -30,6 +31,24 @@ class Question:
     
         return qStr
 
+class Test:
+    correctQs = []
+    incorrectQs = []
+    
+    def addCorrectQ(self, q):
+        self.correctQs.append(q)
+        
+    def addIncorrectQ(self, q):
+        self.incorrectQs.append(q)
+        
+    def getReport(self):
+        correctNum = len(self.correctQs)
+        incorrectNum = len(self.incorrectQs)
+        score = 100 * correctNum / (correctNum + incorrectNum)
+    
+        return 'Correct:' + str(correctNum) + ', ' + 'Incorrect:' + str(incorrectNum) + '. Final score is ' + str(score) + '.'
+
+
 def generateSingleQ():
     num1 = random.randint(1, 99)
     num2 = random.randint(1, 99)
@@ -41,26 +60,6 @@ def generateSingleQ():
         num2 = random.randint(1, 99)
         
     return Question(num1, num2, operType)
-    
-
-def generateQuestions(num, numCol:int, mode):
-    qList = []
-    qStrList = []
-    additionCnt = 0
-    
-    for i in range(num):
-        q = generateSingleQ()
-        qList.append(q)
-        
-        if q.operType == 'ADD':
-            additionCnt = additionCnt + 1
-    
-    print('Additon: ' + str(additionCnt))
-    
-    for q in qList:
-        qStrList.append(q.getString(mode))
-    
-    printQ(qStrList, numCol)
     
 def validate(operType, num1, num2):
     if operType == 'SUBTRACT' and num1 <= num2:
@@ -76,21 +75,33 @@ def validate(operType, num1, num2):
         
     return True
 
-if len(sys.argv) != 4:
-    numOfQ = int(input("Number of questions:"))
-    numOfCol = int(input("Number of columns:"))
-    mode = input("Question Mode (1:normal/2:fillBlank):")
-else:
-    numOfQ = int(sys.argv[1])
-    numOfCol = int(sys.argv[2])
-    mode = sys.argv[3]
-
-if mode == '1':
-    mode = 'normal'
-else:
-    mode = 'fillBlank'
-
-
-print("Generating a paper with [%s] questions in [%s] columns with mode:[%s]..."%(numOfQ, numOfCol, mode))
+test = Test()
     
-generateQuestions(numOfQ, numOfCol, mode)
+print('Test starting... 3')
+time.sleep(1)
+print('Test starting... 2')
+time.sleep(1)
+print('Test starting... 1')
+time.sleep(1)
+print('GO!')
+print()
+print('---')
+print()
+
+for i in range(10):
+    q = generateSingleQ()
+    answer = int(input(q.getString('normal') + ': '))
+
+    if answer == q.answer:
+        test.addCorrectQ(q)
+        
+        print('Correct!')
+        print()
+    else:
+        test.addIncorrectQ(q)
+        
+        print('Incorrect!')
+        print()
+
+print()
+print(test.getReport())
