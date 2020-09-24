@@ -1,8 +1,13 @@
+# -*- coding: UTF-8 -*-
 from mathGen import printQ
+from termcolor import colored
 
 import random
+import io
+import os
 import sys
 import time
+import winsound
 
 class Question:
     def __init__(self, num1, num2, operType):
@@ -76,7 +81,10 @@ def validate(operType, num1, num2):
     return True
 
 test = Test()
-    
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8')    
+os.system('color')
+
 print('Test starting... 3')
 time.sleep(1)
 print('Test starting... 2')
@@ -90,17 +98,27 @@ print()
 
 for i in range(10):
     q = generateSingleQ()
-    answer = int(input(q.getString('normal') + ': '))
+    answer = int(input(' ' + q.getString('normal') + ': '))
 
     if answer == q.answer:
         test.addCorrectQ(q)
         
-        print('Correct!')
+        print(colored('-----------------V', 'green'))
+        
+        frequency = 2500  # Set Frequency To 2500 Hertz
+        duration = 100  # Set Duration To 1000 ms == 1 second
+        winsound.Beep(frequency, duration)
+        winsound.Beep(frequency, duration)
+        
         print()
     else:
         test.addIncorrectQ(q)
         
-        print('Incorrect!')
+        print(colored('-----------------X', 'red'))
+        
+        frequency = 1500  # Set Frequency To 2500 Hertz
+        duration = 600  # Set Duration To 1000 ms == 1 second
+        winsound.Beep(frequency, duration)
         print()
 
 print()
