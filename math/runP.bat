@@ -1,1 +1,1 @@
-python mathPuzzle.py
+python mathPuzzle.py %1
