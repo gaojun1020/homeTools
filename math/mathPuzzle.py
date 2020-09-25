@@ -126,7 +126,11 @@ print()
 
 for i in range(test.numOfQ):
     q = generateSingleQ()
-    answer = int(input(q.getString('normal') + ': '))
+    
+    try:
+        answer = int(input(q.getString('normal') + ': '))
+    except ValueError:
+        answer = 8888888
 
     if answer == q.answer:
         test.addCorrectQ(q)
