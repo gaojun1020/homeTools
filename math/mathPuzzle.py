@@ -1,7 +1,10 @@
 from mathGen import printQ
+from prettyTime import pretty_time_delta
+from printUtil import printMe
 
 import random
 import sys
+import os
 import time
 
 class Question:
@@ -32,21 +35,51 @@ class Question:
         return qStr
 
 class Test:
+    questions = []
     correctQs = []
     incorrectQs = []
     
+    def __init__(self, numOfQ):
+        self.startTime = time.time()
+        self.numOfQ = numOfQ
+        
+        for i in range(numOfQ):
+            q = generateSingleQ()
+            self.addQ(q)
+    
+    def addQ(self, q):
+        self.questions.append(q)
+
     def addCorrectQ(self, q):
         self.correctQs.append(q)
         
     def addIncorrectQ(self, q):
         self.incorrectQs.append(q)
         
+    def getSize(self):
+        return self.numOfQ
+        
+    def end(self):
+        self.endTime = time.time()
+    
+    def getResult(self):
+        correctNum = len(self.correctQs)
+        incorrectNum = len(self.incorrectQs)
+        score = int(100 * correctNum / (correctNum + incorrectNum))
+        elapsedTime = round(self.endTime - self.startTime, 0)
+
+        return (score, correctNum, incorrectNum, elapsedTime)
+        
     def getReport(self):
         correctNum = len(self.correctQs)
         incorrectNum = len(self.incorrectQs)
-        score = 100 * correctNum / (correctNum + incorrectNum)
+        score = int(100 * correctNum / (correctNum + incorrectNum))
+        elapsedTime = round(self.endTime - self.startTime, 0)
     
-        return 'Correct:' + str(correctNum) + ', ' + 'Incorrect:' + str(incorrectNum) + '. Final score is ' + str(score) + '.'
+        return 'Correct:' + str(correctNum) \
+               + ', ' + 'Incorrect:' + str(incorrectNum) \
+               + '. Final score is ' + str(score) + '. ' \
+               + 'Elapsed Time is ' + pretty_time_delta(elapsedTime) + '.'
 
 
 def generateSingleQ():
@@ -75,8 +108,11 @@ def validate(operType, num1, num2):
         
     return True
 
-test = Test()
-    
+###############################
+numQ = int(sys.argv[1])
+test = Test(numQ)
+
+os. system('CLS')     
 print('Test starting... 3')
 time.sleep(1)
 print('Test starting... 2')
@@ -88,7 +124,7 @@ print()
 print('---')
 print()
 
-for i in range(10):
+for i in range(test.numOfQ):
     q = generateSingleQ()
     answer = int(input(q.getString('normal') + ': '))
 
@@ -103,5 +139,6 @@ for i in range(10):
         print('Incorrect!')
         print()
 
+test.end()
 print()
-print(test.getReport())
+printMe(test.getResult()[0])
