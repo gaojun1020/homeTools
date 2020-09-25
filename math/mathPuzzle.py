@@ -146,3 +146,4 @@ for i in range(test.numOfQ):
 test.end()
 print()
 printMe(test.getResult()[0])
+print('Completed in ' + pretty_time_delta(test.getResult()[3]) + '.')
