@@ -1,12 +1,3 @@
-from mathGen import printQ
-from prettyTime import pretty_time_delta
-from printUtil import printMe
-
-import random
-import sys
-import os
-import time
-
 class Question:
     def __init__(self, num1, num2, operType):
         self.num1 = num1
@@ -53,9 +44,9 @@ class Test:
         for i in range(numOfQ):
             q = generateSingleQ()
             
-            while q in self.questions:
+            while q in questions:
                 q = generateSingleQ()
-                
+            
             self.addQ(q)
     
     def addQ(self, q):
@@ -118,43 +109,3 @@ def validate(operType, num1, num2):
         return False
         
     return True
-
-###############################
-os. system('CLS')     
-numQ = int(sys.argv[1])
-test = Test(numQ)
-
-print('Test starting... 3')
-time.sleep(1)
-print('Test starting... 2')
-time.sleep(1)
-print('Test starting... 1')
-time.sleep(1)
-print('GO!')
-print()
-print('---')
-print()
-
-for i in range(test.numOfQ):
-    q = generateSingleQ()
-    
-    try:
-        answer = int(input(q.getString('normal') + ': '))
-    except ValueError:
-        answer = 8888888
-
-    if answer == q.answer:
-        test.addCorrectQ(q)
-        
-        print('Correct!')
-        print()
-    else:
-        test.addIncorrectQ(q)
-        
-        print('Incorrect!')
-        print()
-
-test.end()
-print()
-printMe(test.getResult()[0])
-print('Completed in ' + pretty_time_delta(test.getResult()[3]) + '.')
