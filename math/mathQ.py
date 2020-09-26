@@ -1,47 +1,8 @@
 from mathGen import printQ
+from mathLib import Question
+from mathLib import generateSingleQ
 
-import random
 import sys
-
-class Question:
-    def __init__(self, num1, num2, operType):
-        self.num1 = num1
-        self.num2 = num2
-        self.operType = operType
-        
-        if self.operType == 'ADD':
-            self.answer = num1 + num2
-        else:
-            self.answer = num1 - num2
-        
-    def getString(self, mode):
-        if self.operType == 'ADD':
-            oper = '+'
-        else:
-            oper = '-'
-            
-        if mode == 'normal':
-            qStr = str(self.num1) + ' ' + oper + ' ' + str(self.num2) + ' = '
-        elif mode == 'fillBlank':
-            if random.randint(0, 1) == 0:
-                qStr = '(   ) ' + oper + ' ' + str(self.num2) + ' = ' + str(self.answer)
-            else:
-                qStr = str(self.num1) + ' ' + oper + ' (   )' + ' = ' + str(self.answer)
-    
-        return qStr
-
-def generateSingleQ():
-    num1 = random.randint(1, 99)
-    num2 = random.randint(1, 99)
-    operNum = random.randint(0, 2)
-    operType = 'ADD' if operNum == 1 else 'SUBTRACT'
-    
-    while not validate(operType, num1, num2):
-        num1 = random.randint(1, 99)
-        num2 = random.randint(1, 99)
-        
-    return Question(num1, num2, operType)
-    
 
 def generateQuestions(num, numCol:int, mode):
     qList = []

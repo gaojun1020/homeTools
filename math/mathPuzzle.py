@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from playsound import playsound
 from mathGen import printQ
 from prettyTime import pretty_time_delta
 from printUtil import printMe
@@ -73,6 +74,9 @@ class Test:
     def getSize(self):
         return self.numOfQ
         
+    def start(self):
+        self.startTime = time.time()
+
     def end(self):
         self.endTime = time.time()
     
@@ -128,22 +132,30 @@ numQ = int(sys.argv[1])
 test = Test(numQ)
 os.system('color')
 
+winsound.Beep(2500, 200)
 print('Test starting... 3')
 time.sleep(1)
+
+winsound.Beep(2500, 200)
 print('Test starting... 2')
 time.sleep(1)
+
+winsound.Beep(2500, 200)
 print('Test starting... 1')
 time.sleep(1)
+
 print('GO!')
+winsound.Beep(2500, 1000)
 print()
 print('---')
 print()
 
+test.start()
 for i in range(test.numOfQ):
     q = generateSingleQ()
     
     try:
-        answer = int(input(q.getString('normal') + ': '))
+        answer = int(input(' ' + q.getString('normal') + ': '))
     except ValueError:
         answer = 8888888
 
@@ -168,6 +180,14 @@ for i in range(test.numOfQ):
         winsound.Beep(frequency, duration)
         print()
 
+test.end()
 print()
 printMe(test.getResult()[0])
 print('Completed in ' + pretty_time_delta(test.getResult()[3]) + '.')
+
+if test.getResult()[0] == 100:
+    playsound('resource/cheer.mp3')
+elif test.getResult()[0] < 80:
+    playsound('resource/boo.mp3')
+else:
+    playsound('resource/Whistling.mp3')
