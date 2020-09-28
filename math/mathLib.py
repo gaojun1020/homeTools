@@ -1,4 +1,5 @@
 import random
+import time
 
 class Question:
     def __init__(self, num1, num2, operType):
@@ -46,7 +47,7 @@ class Test:
         for i in range(numOfQ):
             q = generateSingleQ()
             
-            while q in questions:
+            while q in self.questions:
                 q = generateSingleQ()
             
             self.addQ(q)
@@ -63,6 +64,9 @@ class Test:
     def getSize(self):
         return self.numOfQ
         
+    def start(self):
+        self.startTime = time.time()
+
     def end(self):
         self.endTime = time.time()
     

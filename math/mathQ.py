@@ -1,42 +1,67 @@
-from mathGen import printQ
-from mathLib import Question
+from fpdf import FPDF   
+
+from mathLib import Test, Question
 from mathLib import generateSingleQ
 
 import sys
 
-def generateQuestions(num, numCol:int, mode):
-    qList = []
-    qStrList = []
-    additionCnt = 0
+def printQ(qList, mode:int):  
+    if mode <= 2:
+        mode = 2
+    elif mode >= 4:
+        mode = 4
+
+    # save FPDF() class into a  
+    # variable pdf 
+    pdf = FPDF() 
+      
+    # Add a page 
+    pdf.add_page() 
+      
+    # set style and size of font  
+    # that you want in the pdf 
+    pdf.set_font("Arial", size = 11) 
     
-    for i in range(num):
-        q = generateSingleQ()
-        qList.append(q)
-        
-        if q.operType == 'ADD':
-            additionCnt = additionCnt + 1
+    lnValue = 1
+    index = 0
     
-    print('Additon: ' + str(additionCnt))
-    
+    # mode - 2: 0, 1
+    # mode - 3: 0, 0, 1
+    # mode - 4: 0, 0, 0, 1
     for q in qList:
+        # Control whether to start from a new line
+        if (index + 1) % mode == 0:
+            lnValue = 1
+        else:
+            lnValue = 0
+        
+        # add quesiton cell 
+        pdf.cell(200 / mode, 8, q, 
+                 ln = lnValue, align = 'L') 
+				 
+        index = index + 1
+		
+        if index % (5 * mode) == 0:
+            pdf.cell(100, 4, '-----------------------------------------------------------------------------', 
+                 ln = 0, align = 'L') 
+            pdf.cell(100, 4, '-----------------------------------------------------------', 
+                 ln = 1, align = 'L') 
+			
+      
+    # save the pdf with name .pdf 
+    pdf.output("math-001.pdf")
+    
+def generateQuestions(num, numCol:int, mode):
+    qStrList = []
+    
+    test = Test(num)
+    
+    for q in test.questions:
         qStrList.append(q.getString(mode))
     
     printQ(qStrList, numCol)
-    
-def validate(operType, num1, num2):
-    if operType == 'SUBTRACT' and num1 <= num2:
-        return False
-    elif num1 > 20 or num2 > 20:
-        return False
-    elif num1 < 10 and num2 < 10:
-        return False
-    elif num1 < 6 or num2 < 6:
-        return False
-    elif operType == 'ADD' and (num1 % 10 == 0 or num2 % 10 == 0):
-        return False
-        
-    return True
 
+####################################################    
 if len(sys.argv) != 4:
     numOfQ = int(input("Number of questions:"))
     numOfCol = int(input("Number of columns:"))
