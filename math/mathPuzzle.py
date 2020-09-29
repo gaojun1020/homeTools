@@ -3,7 +3,6 @@ from playsound import playsound
 from prettyTime import pretty_time_delta
 from printUtil import printMe
 from termcolor import colored
-from mathGen import printQ
 from mathLib import Question, Test
 
 import random

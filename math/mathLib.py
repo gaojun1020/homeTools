@@ -39,16 +39,18 @@ class Test:
     questions = []
     correctQs = []
     incorrectQs = []
+    numScope = 40
     
-    def __init__(self, numOfQ):
+    def __init__(self, numOfQ, numScope = 40):
         self.startTime = time.time()
         self.numOfQ = numOfQ
+        self.numScope = numScope
         
         for i in range(numOfQ):
-            q = generateSingleQ()
+            q = self.generateSingleQ()
             
             while q in self.questions:
-                q = generateSingleQ()
+                q = self.generateSingleQ()
             
             self.addQ(q)
     
@@ -97,32 +99,33 @@ class Test:
                + ', ' + 'Incorrect:' + str(incorrectNum) \
                + '. Final score is ' + str(score) + '. ' \
                + 'Elapsed Time is ' + pretty_time_delta(elapsedTime) + '.'
+               
+    def validate(self, operType, num1, num2):
+        if operType == 'SUBTRACT' and num1 <= num2:
+            return False
+        elif num1 > self.numScope or num2 > self.numScope:
+            return False
+        elif num1 < 10 and num2 < 10:
+            return False
+        elif num1 < 6 or num2 < 6:
+            return False
+        elif operType == 'ADD' and (num1 % 10 == 0 or num2 % 10 == 0):
+            return False
+            
+        return True
 
 
-def generateSingleQ():
-    num1 = random.randint(1, 99)
-    num2 = random.randint(1, 99)
-    
-    #decide num of + vs -
-    operNum = random.randint(0, 1)
-    operType = 'ADD' if operNum == 1 else 'SUBTRACT'
-    
-    while not validate(operType, num1, num2):
+    def generateSingleQ(self):
         num1 = random.randint(1, 99)
         num2 = random.randint(1, 99)
         
-    return Question(num1, num2, operType)
-    
-def validate(operType, num1, num2):
-    if operType == 'SUBTRACT' and num1 <= num2:
-        return False
-    elif num1 > 30 or num2 > 30:
-        return False
-    elif num1 < 10 and num2 < 10:
-        return False
-    elif num1 < 6 or num2 < 6:
-        return False
-    elif operType == 'ADD' and (num1 % 10 == 0 or num2 % 10 == 0):
-        return False
+        #decide num of + vs -
+        operNum = random.randint(0, 1)
+        operType = 'ADD' if operNum == 1 else 'SUBTRACT'
         
-    return True
+        while not self.validate(operType, num1, num2):
+            num1 = random.randint(1, 99)
+            num2 = random.randint(1, 99)
+            
+        return Question(num1, num2, operType)
+    

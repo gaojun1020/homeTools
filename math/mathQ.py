@@ -1,7 +1,6 @@
 from fpdf import FPDF   
 
 from mathLib import Test, Question
-from mathLib import generateSingleQ
 
 import sys
 
@@ -76,10 +75,12 @@ def parseInput(prompt, default):
 try:
     numOfQ = int(sys.argv[1])
     numOfCol = int(sys.argv[2])
-    mode = int(sys.argv[3])
+    numScope = int(sys.argv[3])
+    mode = int(sys.argv[4])
 except:   
     numOfQ = parseInput("Number of questions:(120)", 120)
     numOfCol = parseInput("Number of columns:(4)", 4)
+    numScope = parseInput("No larger than number:(40)", 40)
     mode = parseInput("Question Mode: (1:normal(default); 2:fillBlank)", 1)
 
 if mode == 1:
@@ -88,7 +89,7 @@ else:
     mode = 'fillBlank'
 
 
-print("Generating a paper with [%s] questions in [%s] columns with mode:[%s]..."%(numOfQ, numOfCol, mode))
+print("Generating a paper with [%s] questions in [%s] columns, no larger than [%s], with mode:[%s]..."%(numOfQ, numOfCol, numScope, mode))
     
-test = Test(numOfQ)    
+test = Test(numOfQ, numScope)    
 printQ(test.getPrintableQs(mode), numOfCol)
