@@ -16,7 +16,7 @@ questions = test.getPrintableQs('normal') #make list of math questions
 
 home = canvas(width=1200, height=600)
 floor = box(canvas = home, pos = vector(0,-10,0), size = vector(40,2,2), color = color.blue)
-warning = text(canvas = home, pos=vector(-10,10,10), text = "Type the letter before it falls!", height = 1, depth = 0.1, color=color.white)
+warning = text(canvas = home, pos=vector(-10,10,10), text = "Answer  before it falls!", height = 1, depth = 0.1, color=color.white)
 
 kbInput = ''
 t=0
@@ -50,11 +50,11 @@ def keyInput(evt):
     s = evt.key
     
     if s == '\n':
-        answer = kbInput        
-        print('answer = ' + answer) 
+        answer = int(kbInput) if kbInput.isdigit() else None        
+        print('answer = ' + str(answer)) 
         kbInput = ''
         
-        if int(answer) == test.questions[i].answer:
+        if answer == test.questions[i].answer:
             reactionTime = rT 
             target.pos = vector(-10 + 2 * 10 * random(), 20, 0) #new starting position
             target.velocity.y = target.velocity.y * 1.05 #increase veloctiy
@@ -79,7 +79,7 @@ def keyInput(evt):
 home.bind('keydown', keyInput)
 
 while target.pos.y > -10 and not endGame : 
-    rate(50)
+    rate(100)
     target.text = questions[i] #pick a letter
     score.text = "Score: " + str(points)
     wrong.text = "Wrong: " + str(wrongCnt)
