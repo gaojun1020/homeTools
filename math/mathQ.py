@@ -51,27 +51,38 @@ def printQ(qList, mode:int):
     # save the pdf with name .pdf 
     pdf.output("math-001.pdf")
     
-def generateQuestions(num, numCol:int, mode):
-    qStrList = []
+def parseInput(prompt, default):
+    result = ''
     
-    test = Test(num)
-    
-    for q in test.questions:
-        qStrList.append(q.getString(mode))
-    
-    printQ(qStrList, numCol)
+    while(result != '$ERROR$'):
+        inputStr = input(prompt)
 
-####################################################    
-if len(sys.argv) != 4:
-    numOfQ = int(input("Number of questions:"))
-    numOfCol = int(input("Number of columns:"))
-    mode = input("Question Mode (1:normal/2:fillBlank):")
-else:
+        try:
+            result = int(inputStr)
+            
+            break
+        except ValueError:
+            if inputStr == '':
+                result = default
+                
+                break
+            else:
+                result = '$ERROR$'
+    
+    return result
+
+####################################################   
+
+try:
     numOfQ = int(sys.argv[1])
     numOfCol = int(sys.argv[2])
-    mode = sys.argv[3]
+    mode = int(sys.argv[3])
+except:   
+    numOfQ = parseInput("Number of questions:(120)", 120)
+    numOfCol = parseInput("Number of columns:(4)", 4)
+    mode = parseInput("Question Mode: (1:normal(default); 2:fillBlank)", 1)
 
-if mode == '1':
+if mode == 1:
     mode = 'normal'
 else:
     mode = 'fillBlank'
@@ -79,4 +90,5 @@ else:
 
 print("Generating a paper with [%s] questions in [%s] columns with mode:[%s]..."%(numOfQ, numOfCol, mode))
     
-generateQuestions(numOfQ, numOfCol, mode)
+test = Test(numOfQ)    
+printQ(test.getPrintableQs(mode), numOfCol)

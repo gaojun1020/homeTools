@@ -69,6 +69,15 @@ class Test:
 
     def end(self):
         self.endTime = time.time()
+        
+    def getPrintableQs(self, mode):
+        qStrList = []
+    
+        for q in self.questions:
+            qStrList.append(q.getString(mode))
+            
+        return qStrList;
+        
     
     def getResult(self):
         correctNum = len(self.correctQs)
