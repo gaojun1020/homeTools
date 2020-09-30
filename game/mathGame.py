@@ -1,6 +1,7 @@
 # Import and initialize the pygame library
 import pygame
 import random
+from mathLib import Question, Test
 
 # Import pygame.locals for easier access to key coordinates
 # Updated to conform to flake8 and black standards
@@ -18,6 +19,11 @@ from pygame.locals import (
 
 # Initialize pygame
 pygame.init()
+
+numOfQ = 200
+test = Test(numOfQ)
+questions = test.getPrintableQs('normal') #make list of math questions
+indexQ = 0
 
 # Define a Player object by extending pygame.sprite.Sprite
 # The surface drawn on the screen is now an attribute of 'player'
@@ -55,6 +61,8 @@ class Enemy(pygame.sprite.Sprite):
     letter = 'a'
     
     def __init__(self):
+        global questions, indexQ
+        
         super(Enemy, self).__init__()
         self.surf = pygame.image.load("missile.png").convert()
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
@@ -64,10 +72,12 @@ class Enemy(pygame.sprite.Sprite):
                 random.randint(0, SCREEN_HEIGHT),
             )
         )
-        label = pygame.font.SysFont("monospace", 20, bold=True).render('12 + 13 =', True, (255, 255, 255))
+        label = pygame.font.SysFont("monospace", 20, bold=True).render(questions[indexQ], True, (255, 255, 255))
         self.surf.blit(label, [60, 32])
         
         self.speed = random.randint(1, 5)
+        
+        indexQ += 1
 
     # Move the sprite based on speed
     # Remove the sprite when it passes the left edge of the screen
@@ -145,6 +155,8 @@ while running:
                 if event.key  == K_RETURN:
                     answer = keyin
                     keyin = ''
+                    
+                    enemies.sprites()[0].kill()
                     
                     print('answer is ' + answer)
                 else:
