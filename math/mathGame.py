@@ -29,7 +29,7 @@ wrong = label(canvas = home, pos=vector(-2,-15,0)) #display # of wrong keystroke
 rTime = label(canvas = home, pos=vector(15,-17,0)) #display reaction time
 AVGrtime = label(canvas = home, pos=vector(-2,-17,0)) #display average reaction time
 target.pos = vector(0,20,0) #initial target position
-target.velocity = vector(0, -3, 0) #initial target velocity
+target.velocity = vector(0, -1, 0) #initial target velocity
 
 i = 0 #increments through alphabet
 points = 0 #point counter
@@ -48,10 +48,11 @@ def keyInput(evt):
     global rT, points, target, wrongCnt, l, warning, i, endGame, kbInput, answer
     
     s = evt.key
+    print(s + " is pressed")
     
     if s == '\n':
         answer = int(kbInput) if kbInput.isdigit() else None        
-        print('answer = ' + str(answer)) 
+        print('answer = ' + answer) 
         kbInput = ''
         
         if answer == test.questions[i].answer:
@@ -67,7 +68,7 @@ def keyInput(evt):
             wrongCnt = wrongCnt + 1
             rT = 0
 
-    else:        
+    elif s != 'alt':        
         kbInput += s
     
     if s == 'backspace':
