@@ -1,10 +1,15 @@
 from fpdf import FPDF   
-
 from mathLib import Test, Question
-
+import webbrowser
 import sys
+import datetime
+
+OUTPUT_PATH = 'D:/data/temp/mathTests'
 
 def printQ(qList, mode:int):  
+    now = datetime.datetime.now()
+    outputFilename = 'math_test_' + now.strftime('%Y%m%d%H%M%S') + '_' + now.strftime('%f') + '.pdf'
+    
     if mode <= 2:
         mode = 2
     elif mode >= 4:
@@ -48,7 +53,8 @@ def printQ(qList, mode:int):
 			
       
     # save the pdf with name .pdf 
-    pdf.output("math-001.pdf")
+    pdf.output(OUTPUT_PATH + '\\' + outputFilename)
+    webbrowser.open_new(r'file://' + OUTPUT_PATH + '\\' + outputFilename)
     
 def parseInput(prompt, default):
     result = ''
